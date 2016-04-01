@@ -1,0 +1,45 @@
+{
+	"id":             "zen_utils",
+	"name" : "Zen Utility Framework for JUCE",
+	"version" : "1.1.0",
+	"description" : "Utilities",
+	"website" : "http://www.soniczentropy.com",
+	"license" : "GPL",
+
+  "dependencies":   [ { "id": "juce_audio_basics",      "version": "matching" },
+		      { "id": "juce_audio_devices",     "version": "matching" },
+		      { "id": "juce_audio_formats",     "version": "matching" },
+		      { "id": "juce_audio_processors",     "version": "matching" },
+		      { "id": "juce_audio_utils",     	"version": "matching" },
+		      { "id": "juce_core",     		"version": "matching" },
+		      { "id": "juce_data_structures",   "version": "matching" },
+		      { "id": "juce_events",     	"version": "matching" },
+		      { "id": "juce_graphics",     	"version": "matching" },
+		      { "id": "juce_gui_basics",     	"version": "matching" }, 
+		      { "id": "juce_gui_extra",     	"version": "matching" },
+		      { "id": "juce_opengl",     	"version": "matching" },
+		      { "id": "juce_video",     	"version": "matching" }
+		      ],
+
+	"include" : "zen_utils.h",
+
+	"compile" : [ { "file": "zen_utils.cpp", "target" : "! xcode" },
+	              { "file": "zen_utils.mm",  "target" : "xcode"}
+	],
+
+	"browse" : ["components/*",
+		"components/notepadcomp/*",
+		"components/panslider/*",
+		"debug/*",
+		"debug/GUI/*",
+		"DSP/*",
+		"parameters/*",
+		"processing/*",
+		"tests/*",
+		"utilities/*"
+	],
+
+	"OSXFrameworks" : "Cocoa IOKit",
+	"iOSFrameworks" : "Foundation"
+
+}
