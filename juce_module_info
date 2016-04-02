@@ -6,19 +6,8 @@
 	"website" : "http://www.soniczentropy.com",
 	"license" : "GPL",
 
-  "dependencies":   [ { "id": "juce_audio_basics",      "version": "matching" },
-		      { "id": "juce_audio_devices",     "version": "matching" },
-		      { "id": "juce_audio_formats",     "version": "matching" },
-		      { "id": "juce_audio_processors",     "version": "matching" },
-		      { "id": "juce_audio_utils",     	"version": "matching" },
-		      { "id": "juce_core",     		"version": "matching" },
-		      { "id": "juce_data_structures",   "version": "matching" },
-		      { "id": "juce_events",     	"version": "matching" },
-		      { "id": "juce_graphics",     	"version": "matching" },
-		      { "id": "juce_gui_basics",     	"version": "matching" }, 
-		      { "id": "juce_gui_extra",     	"version": "matching" },
-		      { "id": "juce_opengl",     	"version": "matching" },
-		      { "id": "juce_video",     	"version": "matching" }
+  "dependencies":   [ { "id": "juce_audio_utils",     	"version": "matching" },
+		      { "id": "juce_gui_extra",     	"version": "matching" }
 		      ],
 
 	"include" : "zen_utils.h",
