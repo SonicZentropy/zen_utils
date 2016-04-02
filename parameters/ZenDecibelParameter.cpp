@@ -52,7 +52,7 @@ void ZenDecibelParameter::setValueGain(float inValue)
 
 void ZenDecibelParameter::setValueNotifyingHost(float inValue)
 {
-	//		DBG("In DecibelParameter::setValueNotifyingHost() ");
+	//DBG("In DecibelParameter::setValueNotifyingHost() ");
 	//This actually gets a normalized value already, not decibels
 	//float dbConvertedToLinear = convertDecibelsToLinearWithSetMidpoint(newValue);
 	float clampedValue = range.snapToLegalValue(inValue);

@@ -34,6 +34,15 @@ void ZenBoolParameter::setValueRaw(float newValue)
 	else value.store(1.0f);
 }
 
+void ZenBoolParameter::toggleValue()
+{
+	if (value.load() == 0.0f)
+	{
+		value.store(1.0f);
+	}
+	else value.store(0.0f);
+}
+
 void ZenBoolParameter::setValueNotifyingHost(float inValue)
 {
 	float boolVal = convertFloatToBoolFloat(inValue);

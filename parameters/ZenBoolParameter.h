@@ -20,7 +20,7 @@
 //  Zentropia is hosted on Github at [https://github.com/SonicZentropy]
 ===============================================================================*/
 
- 
+
 #ifndef ZEN_BOOLEAN_PARAMETER_H_INCLUDED
 #define ZEN_BOOLEAN_PARAMETER_H_INCLUDED
 
@@ -34,7 +34,7 @@ public:
 	}
 
 	ZenBoolParameter(String parameterID, String paramName, bool inDefaultValue = false, String unitLabel = "")
-		: ZenParameter(parameterID, paramName, convertBooleanToFloat(inDefaultValue), unitLabel, false, 0.0f), 
+		: ZenParameter(parameterID, paramName, convertBooleanToFloat(inDefaultValue), unitLabel, false, 0.0f),
 		defaultValue(convertBooleanToFloat(inDefaultValue))
 	{
 	}
@@ -47,16 +47,13 @@ public:
 
 	void setValueRaw(float newValue) override;
 
+	void toggleValue();
+
+	void setValueToggle() { toggleValue(); };
+
 	/** This assumes inValue is NOT normalized and coming from NOT the host, since
 	* it promptly notifies the host of the change. */
 	void setValueNotifyingHost(float inValue) override;
-
-	/**Sets this parameter's value from normalized value. This should never
-	*  ever be called, as the GUI does not deal in normalized values */
-	/*void setValueNormalizedNotifyingHost(float inValue)
-	{
-		setValueNotifyingHost(inValue);
-	}*/
 
 	/**This is called by the HOST/Process block and needs to return
 	* a normalized value */

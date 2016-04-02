@@ -34,9 +34,10 @@ public:
 	/** Sets raw decibel value from a gain value (From Process Block) */
 	void setValueGain(float inValue);
 
-	/** This assumes inValue is NOT normalized and coming from NOT the host, since
+	/** This assumes inValue is IN DECIBELS and coming from NOT the host, since
 	* it promptly notifies the host of the change. */
 	void setValueNotifyingHost(float inValue) override;
+
 	/** Returns value properly normalized between 0 and 1 with the set midpoint.
 	 ** Handles smoothed and non-smoothed values innately*/
 	float getValue();

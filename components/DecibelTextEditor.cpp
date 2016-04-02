@@ -12,25 +12,29 @@
 //  Zentropia is hosted on Github at [https://github.com/SonicZentropy]
 ===============================================================================*/
 
-DecibelTextEditor::DecibelTextEditor(const String& compName, const AudioParameterFloat* param, juce_wchar passwordCharacter)
+DecibelTextEditor::DecibelTextEditor(String compName, ZenDecibelParameter* param, juce_wchar passwordCharacter)
 	:TextEditor(compName, passwordCharacter),
-	nRange(param->range.start, param->range.end, 0.01f)
+	nRange(param->getMinDecibels(), param->getMaxDecibels(), 0.01f)
 {
 }
 
 float DecibelTextEditor::getNormalizedValueFromText() const
 {
-	float conv = nRange.convertTo0to1(this->getText().getFloatValue());
-	DBG("Key pressed, value is: " + this->getText() + " and trimmed: " + String(this->getText().getFloatValue()) + " and converted: " + String(conv));
+	return nRange.convertTo0to1(this->getText().getFloatValue());
+}
 
-	return conv;
+float DecibelTextEditor::getDecibelValueFromText() const
+{
+	return getText().getFloatValue();
 }
 
 void DecibelTextEditor::formatTextAfterEntry()
 {
+    /*
 	std::stringstream ss;
 	ss.setf(std::ios_base::fixed, std::ios_base::floatfield);
 	ss.precision(2);
-	ss << getText().getFloatValue();
-	setText(ss.str(), false);
+	ss << getText().getFloatValue();*/
+	String dbText(getText().getFloatValue(), 2);
+	setText(dbText, false);
 }

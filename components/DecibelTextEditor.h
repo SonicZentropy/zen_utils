@@ -19,13 +19,15 @@ class DecibelTextEditor : public TextEditor
 {
 public:
 
-	DecibelTextEditor(const String& componentName, const AudioParameterFloat* param, juce_wchar passwordCharacter = 0U);
+	DecibelTextEditor(String componentName, ZenDecibelParameter* param, juce_wchar passwordCharacter = 0U);
 
-	/// <summary>Returns linear 0.0 to 1.0 representation of given decibel value from value text</summary>
-	/// <returns>Float linear value representing the decibel value</returns>
+	/** Returns linear 0.0 to 1.0 representation of given decibel value from value text */
 	float getNormalizedValueFromText() const;
 
-	/// <summary>Formats value to readable text string with Decibel units</summary>
+	/** Returns decibel value from value text */
+	float getDecibelValueFromText() const;
+
+	/** Formats value to readable text string with Decibel units*/
 	void formatTextAfterEntry();
 
 	template <class Type>

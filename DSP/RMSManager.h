@@ -73,6 +73,11 @@ public:
 		return std::max(getLeftPeak(), getRightPeak());
 	}
 
+	double getMaxChannelPeakInDB() const
+	{
+		return std::max(getLeftPeakInDB(), getRightPeakInDB());
+	}
+
 	double getLeftCurrentRunningRms() const
 	{
 		return sqrt(leftRunningSamplesSquaredSum / countTotalRunningSamples);
@@ -162,7 +167,7 @@ private:
 	double samplesPerSecond = 0;
 	unsigned int secondsOfAudioCalculated = 0;
 
-	double decibelRMSCalibration = 3.0f;
+	double decibelRMSCalibration = 0.0f;
 
 	std::unique_ptr<boost::circular_buffer<double>> prevLeftBuf, prevRightBuf;
 };
