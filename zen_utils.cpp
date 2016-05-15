@@ -3,11 +3,19 @@
 namespace Zen{
 using namespace juce;
 
+#include "GUI/ZenBinaryData.cpp"
+#include "GUI/ZenLabelDisplay.cpp"
+#include "GUI/ZenImageButton.cpp"
+#include "GUI/ZenRotaryEditorLabel.cpp"
+#include "GUI/ZenRotaryFilmStripSlider.cpp"
+#include "GUI/ZenTextEditor.cpp"
+#include "GUI/ZenLookAndFeel.cpp"
+
 #include "components/AssociatedComponent.cpp"
 #include "components/AssociatedButton.cpp"
 #include "components/AssociatedTextButton.cpp"
 #include "components/AssociatedSlider.cpp"
-#include "components/DecibelTextEditor.cpp"
+#include "components/ZenDecibelTextEditor.cpp"
 #include "components/notepadcomp/NotepadComponent.cpp"
 #include "components/panslider/PanSlider.cpp"
 #include "debug/GUI/buffer_visualiser.cpp"
@@ -25,4 +33,5 @@ using namespace juce;
 #include "parameters/ZenDecibelParameter.cpp"
 #include "processing/BufferSampleProcesses.cpp"
 #include "utilities/ZenParamUtils.cpp"
+
 }

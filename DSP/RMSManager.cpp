@@ -99,6 +99,7 @@ void LevelAnalysisManager::sampleRateChanged(const double& newSampleRate)
 	// if the size is reduced, the last samples are truncated so the
 	// measurement is no longer accurate (Intended)
 	prevLeftBuf->rset_capacity(samplesPerWindow);
+	prevRightBuf->rset_capacity(samplesPerWindow);
 }
 
 void LevelAnalysisManager::resetCalculation()
@@ -109,15 +110,19 @@ void LevelAnalysisManager::resetCalculation()
 	leftMaxSamplesSquaredWindowFound = 0;
 	rightMaxSamplesSquaredWindowFound = 0;
 
-	leftPeakSample = 0;
-	rightPeakSample = 0;
+	leftPeakSample = -1000;
+	rightPeakSample = -1000;
 
 	leftRunningSamplesSquaredSum = 0;
 	rightRunningSamplesSquaredSum = 0;
+	
 	leftSumSquares = 0;
 	rightSumSquares = 0;
 	leftCurrRMS = 0;
 	rightCurrRMS = 0;
 
 	rmsMap.clear();
+	secondsOfAudioCalculated = 0;
+	prevLeftBuf->clear();
+	prevRightBuf->clear();
 }

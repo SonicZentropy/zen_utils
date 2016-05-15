@@ -109,6 +109,11 @@ public:
 	*/
 	int getNumSteps() const override { return 2; }
 
+	explicit operator bool() const
+	{
+		return getValueAsBool(); // Or false!
+	}
+
 protected:
 	float defaultValue;
 

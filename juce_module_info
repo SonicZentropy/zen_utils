@@ -6,9 +6,12 @@
 	"website" : "http://www.soniczentropy.com",
 	"license" : "GPL",
 
-  "dependencies":   [ { "id": "juce_audio_utils",     	"version": "matching" },
-		      { "id": "juce_gui_extra",     	"version": "matching" }
-		      ],
+  "dependencies":   [ 
+    { "id": "juce_audio_utils",     	"version": "matching" },
+    { "id": "juce_gui_basics", "version" : "matching" },
+    { "id": "juce_gui_extra", "version": "matching" },
+    { "id": "juce_graphics", "version" : "matching" }
+				    ],
 
 	"include" : "zen_utils.h",
 
@@ -16,12 +19,14 @@
 	              { "file": "zen_utils.mm",  "target" : "xcode"}
 	],
 
-	"browse" : ["components/*",
+	"browse" : ["GUI/*",
+		"components/*",
 		"components/notepadcomp/*",
 		"components/panslider/*",
 		"debug/*",
 		"debug/GUI/*",
 		"DSP/*",
+		"looknfeel/*",
 		"parameters/*",
 		"processing/*",
 		"tests/*",
@@ -30,5 +35,4 @@
 
 	"OSXFrameworks" : "Cocoa IOKit",
 	"iOSFrameworks" : "Foundation"
-
 }

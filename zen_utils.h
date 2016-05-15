@@ -16,7 +16,9 @@
 #define ZENHEADER_H_INCLUDED
 
 #include "AppConfig.h"
+#include <modules/juce_gui_basics/juce_gui_basics.h>
 #include <modules/juce_gui_extra/juce_gui_extra.h>
+#include <modules/juce_graphics/juce_graphics.h>
 #include <modules/juce_audio_utils/juce_audio_utils.h>
 
 #include <sstream>
@@ -32,6 +34,14 @@
 namespace Zen{
 using namespace juce;
 
+#include "GUI/ZenBinaryData.h"
+#include "GUI/ZenLabelDisplay.h"
+#include "GUI/ZenImageButton.h"
+#include "GUI/ZenRotaryEditorLabel.h"
+#include "GUI/ZenRotaryFilmStripSlider.h"
+#include "GUI/ZenTextEditor.h"
+#include "GUI/ZenLookAndFeel.h"
+
 #include "utilities/ZenUtils.hpp"
 #include "utilities/ZenParamUtils.h"
 #include "utilities/ZenDecibelConversions.hpp"
@@ -46,7 +56,7 @@ using namespace juce;
 #include "components/AssociatedComponent.h"
 #include "components/AssociatedSlider.h"
 #include "components/AssociatedTextButton.h"
-#include "components/DecibelTextEditor.h"
+#include "components/ZenDecibelTextEditor.h"
 #include "components/notepadcomp/NotepadComponent.h"
 #include "components/panslider/PanSlider.h"
 #include "debug/GUI/buffer_visualiser.h"
@@ -58,8 +68,9 @@ using namespace juce;
 #include "debug/ZenDebugPrinter.h"
 #include "DSP/RMSManager.h"
 #include "processing/BufferSampleProcesses.h"
+//#include "looknfeel/ZenLookAndFeel.h"
 }
 
 using namespace Zen;
-
+#define S(inText) String(inText)
 #endif

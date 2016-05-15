@@ -156,8 +156,10 @@ private:
 	double leftRunningSamplesSquaredSum = 0;
 	double rightRunningSamplesSquaredSum = 0;
 
-	double leftSumSquares = 0, rightSumSquares = 0;
-	double leftCurrRMS = 0, rightCurrRMS = 0;
+	double leftSumSquares = 0;
+	double rightSumSquares = 0;
+	double leftCurrRMS = 0;
+	double rightCurrRMS = 0;
 
 	AudioPlayHead::CurrentPositionInfo posInfo;
 
