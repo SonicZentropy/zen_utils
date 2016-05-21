@@ -9,6 +9,10 @@ using namespace juce;
 #include "GUI/ZenRotaryEditorLabel.cpp"
 #include "GUI/ZenRotaryFilmStripSlider.cpp"
 #include "GUI/ZenTextEditor.cpp"
+#include "GUI/ZenComboBox.cpp"
+#include "GUI/ZenTitleBar.cpp"
+#include "GUI/ZenBypassButton.cpp"
+#include "GUI/ZenMenuButton.cpp"
 #include "GUI/ZenLookAndFeel.cpp"
 
 #include "components/AssociatedComponent.cpp"

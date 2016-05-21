@@ -16,20 +16,20 @@
 //#include "ZenRotaryEditorLabel.h"
 //#include "ZenLookAndFeel.h"
 
+using std::make_shared;
 
-ZenRotaryFilmStripSlider::ZenRotaryFilmStripSlider(const String& imgName, const int numFrames, const int knobWidth, const int knobHeight, TextEntryBoxPosition inPos, bool stripIsHorizontal)
-	: Slider(imgName, RotaryHorizontalVerticalDrag, inPos) //Slider(imgName, RotaryHorizontalVerticalDrag, inPos)
+ZenRotaryFilmStripSlider::ZenRotaryFilmStripSlider(const String& imgName, const int numFrames, const int inKnobWidth, const int inKnobHeight, 
+	TextEntryBoxPosition inPos, const int inTextBoxWidth, const int inTextBoxHeight, bool stripIsHorizontal)
+	: Slider(imgName, RotaryHorizontalVerticalDrag, inPos) 
 	, numFrames(numFrames)
 	, filmstripIsHorizontal(stripIsHorizontal)
-{
-	//setSliderStyle(RotaryHorizontalVerticalDrag);
-	//setTextBoxStyle(Slider::TextBoxBelow, false, 80, 30);
+{	
 	setColour(textBoxTextColourId, Colours::white);
 	setColour(textBoxBackgroundColourId, Colour(0x00ffffff));
 	setColour(textBoxHighlightColourId, Colour(0x001111ee));
 	setColour(textBoxOutlineColourId, Colour(0x00808080));
 
-	if (knobWidth > 0 && knobWidth < 48 && knobHeight > 0 && knobHeight < 48)
+	if (inKnobWidth > 0 && inKnobWidth < 48 && inKnobHeight > 0 && inKnobHeight < 48)
 	{
 		filmStrip = ImageCache::getFromMemory(ZenBinaryData::zenRotaryKnobNoGrates_png, (size_t)ZenBinaryData::zenRotaryKnobNoGrates_pngSize);
 		isSmallKnob = true;
@@ -41,7 +41,6 @@ ZenRotaryFilmStripSlider::ZenRotaryFilmStripSlider(const String& imgName, const 
 
 	if (filmStrip.isValid())
 	{
-		//setTextBoxStyle(TextBoxCentered, 0, 80, 30);
 		if (filmstripIsHorizontal) {
 			frameHeight = filmStrip.getHeight();
 			frameWidth = filmStrip.getWidth() / numFrames;
@@ -51,52 +50,25 @@ ZenRotaryFilmStripSlider::ZenRotaryFilmStripSlider(const String& imgName, const 
 		}
 	}
 
-	int compWidth = (knobWidth == -1) ? frameWidth : knobWidth;
-	int	compHeight = (knobHeight == -1) ? frameHeight : knobHeight;
+	knobWidth = (inKnobWidth == -1) ? frameWidth : inKnobWidth;
+	knobHeight = (inKnobHeight == -1) ? frameHeight : inKnobHeight;
 	
 	setNumDecimalPlacesToDisplay(2);
-	if (this->getTextBoxPosition() == Slider::TextBoxLeft || this->getTextBoxPosition() == Slider::TextBoxRight)
-		setSize(compWidth + this->getTextBoxWidth(), compHeight);
-	else if (this->getTextBoxPosition() == Slider::TextBoxAbove || this->getTextBoxPosition() == Slider::TextBoxBelow)
-		setSize(compWidth, compHeight + this->getTextBoxHeight());
-	else // Text box centered
-		setSize(compWidth, compHeight);
+	setTextBoxStyle(inPos, false, inTextBoxWidth, inTextBoxHeight);
+	setSize(knobWidth, knobHeight);
+
+	currentLookAndFeel = &getLookAndFeel();
 }
 
 ZenRotaryFilmStripSlider::~ZenRotaryFilmStripSlider() {};
 
-
+/** Sets the label/text box alignment, position, and size.  Note that the entry box width and height
+/*  Are discrete and do not take into account any indent border size */
 void ZenRotaryFilmStripSlider::setTextBoxStyle(const TextEntryBoxPosition newPosition, const bool isReadOnly,
 	const int textEntryBoxWidth, const int textEntryBoxHeight)
 {
 	TextEntryBoxPosition oldPos = this->getTextBoxPosition();
 	Slider::setTextBoxStyle(newPosition, isReadOnly, textEntryBoxWidth, textEntryBoxHeight);
-// 	switch (this->getTextBoxPosition())
-// 	{
-// 	case TextBoxBelow:
-// 		DBG("below found");
-// 
-// 		break;
-// 	case TextBoxCentered:
-// 		DBG("Centered found");
-// 		break;
-// 	case TextBoxAbove:
-// 		DBG("Above found");
-// 		break;
-// 	case TextBoxLeft:
-// 		DBG("L found");
-// 		if (oldPos != TextBoxLeft && oldPos != TextBoxRight)
-// 			this->setSize(getWidth() + textEntryBoxWidth, getHeight());
-// 		break;
-// 	case TextBoxRight:
-// 		DBG("R found");
-// 		if (oldPos != TextBoxLeft && oldPos != TextBoxRight)
-// 			this->setSize(getWidth() + textEntryBoxWidth, getHeight());
-// 		break;
-// 	default:
-// 		DBG("DEFAULT");
-// 		break;
-// 	}
 	
 }
 
@@ -113,6 +85,8 @@ int ZenRotaryFilmStripSlider::getFrameHeight() const
 
 void ZenRotaryFilmStripSlider::setSize(int newWidth, int newHeight)
 {
+	jassert(nullptr != dynamic_cast<ZenRotaryEditorLabel*>(this->getValueBox()));
+
 	if (isSmallKnob && (newWidth >= 48 || newHeight >= 48))
 	{
 		filmStrip = ImageCache::getFromMemory(ZenBinaryData::zenRotaryKnob_png, ZenBinaryData::zenRotaryKnob_pngSize);
@@ -124,17 +98,48 @@ void ZenRotaryFilmStripSlider::setSize(int newWidth, int newHeight)
 		
 	}
 
-	if (isSmallKnob)
-		dynamic_cast<ZenRotaryEditorLabel*>(this->getValueBox())->setTextHasShadow(false);
+	if (isSmallKnob) //static cast guaranteed to work b/c FilmStripSlider can only contain this
+		static_cast<ZenRotaryEditorLabel*>(this->getValueBox())->setTextHasShadow(false);
 	else
-		dynamic_cast<ZenRotaryEditorLabel*>(this->getValueBox())->setTextHasShadow(true);
+		static_cast<ZenRotaryEditorLabel*>(this->getValueBox())->setTextHasShadow(true);
 
-	Component::setSize(newWidth, newHeight);
 	if (getTextBoxPosition() == TextBoxCentered)
 	{
-		int textWidth = jmin(getTextBoxWidth(), newWidth - 20); //Make sure text box fits into knob
+		Component::setSize(newWidth, newHeight);
+		int textWidth = jmin(getTextBoxWidth(), newWidth - 13); //Make sure text box fits into knob
 		setTextBoxStyle(getTextBoxPosition(), this->isTextBoxEditable(), textWidth, getTextBoxHeight());
 	}
+	else if (getTextBoxPosition() == TextBoxLeft || getTextBoxPosition() == TextBoxRight)
+	{
+		Component::setSize(newWidth + getTextBoxWidth(), newHeight);
+		
+	}
+	else if (getTextBoxPosition() == TextBoxAbove || getTextBoxPosition() == TextBoxBelow)
+	{
+		Component::setSize(newWidth, newHeight + getTextBoxHeight());
+	}
+	
+}
+
+void ZenRotaryFilmStripSlider::paint(Graphics& g)
+{
+	const float sliderPos = (float)valueToProportionOfLength(getLastCurrentValue());
+	jassert(sliderPos >= 0 && sliderPos <= 1.0f);
+	jassert(nullptr != dynamic_cast<ZenLookAndFeel*>(currentLookAndFeel));
+
+	sliderRect = getSliderRect();
+
+	static_cast<ZenLookAndFeel*>(currentLookAndFeel)->drawZenRotarySlider(g,
+		sliderRect.getX(), sliderRect.getY(),
+		getWidth(), getHeight(),
+		sliderPos,  *this);
+	
+}
+
+void ZenRotaryFilmStripSlider::setKnobSize(int inWidth, int inHeight)
+{
+	knobWidth = inWidth;
+	knobHeight = inHeight;
 }
 
 

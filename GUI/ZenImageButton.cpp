@@ -20,8 +20,10 @@
 //==============================================================================
 ZenImageButton::ZenImageButton(const String& buttonName, const String& buttonText_)
 	:ImageButton(buttonName)
+	,textColorButtonOn(Colour(29, 212, 12 ))
+	,textColorButtonOff(Colours::lightgrey)
 	,buttonText(buttonText_)
-{
+{	
 	normalLeft   = ImageCache::getFromMemory(ZenBinaryData::zenImageButton_left_png, ZenBinaryData::zenImageButton_left_pngSize);
 	normalRight  = ImageCache::getFromMemory(ZenBinaryData::zenImageButton_right_png, ZenBinaryData::zenImageButton_right_pngSize);
 	normalCenter = ImageCache::getFromMemory(ZenBinaryData::zenImageButton_center_png, ZenBinaryData::zenImageButton_center_pngSize);
@@ -50,6 +52,8 @@ ZenImageButton::~ZenImageButton()
 
 void ZenImageButton::paintButton(Graphics& g, bool isMouseOver, bool isButtonDown)
 {
+	// Check to ensure the proper L&F has been applied
+	jassert(nullptr != dynamic_cast<ZenLookAndFeel*>(&getLookAndFeel()));
 	if (!isEnabled())
 	{
 		isMouseOver = false;
@@ -57,11 +61,10 @@ void ZenImageButton::paintButton(Graphics& g, bool isMouseOver, bool isButtonDow
 		return;
 	}
 
-	ZenLookAndFeel* zenLF = dynamic_cast<ZenLookAndFeel*>(&getLookAndFeel());
-	if (nullptr != zenLF)
-	{
-		zenLF->drawZenImageButton(g, *this);
-	}
+	// Avoid dynamic cast check here via the above jassert, as the type is compile time static
+	ZenLookAndFeel* zenLF = static_cast<ZenLookAndFeel*>(&getLookAndFeel());
+	zenLF->drawZenImageButton(g, *this);
+	
 }
 
 // void ZenImageButton::paint (Graphics& g)

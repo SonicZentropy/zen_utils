@@ -34,8 +34,9 @@ public: //150 24
 	explicit ZenTextEditor(const String& componentName = String::empty, const ImageBorderType& imageBorderType = SmallBorder, const String& labelText = String::empty, int componentWidth = 150, int componentHeight = 24);
 	~ZenTextEditor();
 	//void repaintText(const Range<int> range);
-	//void paintOverChildren(Graphics& g) override;
 	//void paint(Graphics& g) override;
+	
+	//void paintOverChildren(Graphics& g) override;
 
 	//void drawContent(Graphics& g);
 
@@ -49,6 +50,9 @@ public: //150 24
 
 protected:
 	Image leftEndImage, rightEndImage, centerImage, fullImage;
+
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ZenTextEditor)
 	
 };
 

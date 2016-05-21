@@ -22,9 +22,10 @@
 
 class ZenLookAndFeel : public LookAndFeel_V3
 {
+	
 public:
 	ZenLookAndFeel();
-	void drawRotarySlider(Graphics&, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider&) override;
+	void drawZenRotarySlider(Graphics&, int x, int y, int width, int height, float sliderPosProportional, ZenRotaryFilmStripSlider& slider);
 	void drawLabel(Graphics& g, Label& label) override;
 	Font getLabelFont(Label& label) override;
 	Font getZenImageButtonFont(ZenImageButton& zenbtn);
@@ -36,20 +37,38 @@ public:
 	ZenRotaryEditorLabel* createSliderTextBox(Slider& slider) override;
 
 	void fillTextEditorBackground(Graphics& g, int width, int height, TextEditor& textEditor) override;
-	void drawTextEditorOutline(Graphics& g, int width, int height, TextEditor& textEditor) override;
+	
+	//Image button methods
 	void drawImageButton(Graphics& g, Image* imageToDraw, int imageX, int imageY, int imageW, int imageH, const Colour& overlayColour, float imageOpacity, ImageButton& buttonToDraw) override;
 	void drawZenImageButton(Graphics& g, ZenImageButton& buttonToDraw);
+
+	//Combo box methods
+	void drawComboBox(Graphics&, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox& box) override;
+	Font getComboBoxFont(ComboBox&) override;
+	Label* createComboBoxTextBox(ComboBox&) override;
+	void positionComboBoxText(ComboBox&, Label&) override;
+
+	//Combo box popup menu methods
+	void drawPopupMenuBackground(Graphics&, int width, int height) override;	
+	void drawPopupMenuItem(Graphics&, const Rectangle<int>& area, bool isSeparator, bool isActive, 
+		bool isHighlighted, bool isTicked, bool hasSubMenu, const String& text, const String& shortcutKeyText, 
+		const Drawable* icon, const Colour* textColour) override;
+	void drawPopupMenuSectionHeader(Graphics&, const Rectangle<int>& area, const String& sectionName) override;	
+	Font getPopupMenuFont() override;	
+	void drawPopupMenuUpDownArrow(Graphics&, int width, int height, bool isScrollUpArrow) override;
+
 	//void drawLabel(Graphics&, Label&) override;
 	//Label* createSliderTextBox(Slider&) override;
 protected:
 	Image topImage;
 	Font defaultFont;
 
-	//ScopedPointer<ImageCache> imageCache;
+	
 	Image testImg, bypassImg, knobImage;
 
 };
 
+// #TODO: move this into slider class
 class SliderLabelComp : public Label
 {
 public:
@@ -57,9 +76,5 @@ public:
 
 	void mouseWheelMove(const MouseEvent&, const MouseWheelDetails&) override {}
 };
-
-/** Takes a path (SVG), the center x and y coordinates for a given component, and the angle for rotation
-*** Returns the proper affine transform to control the knob*/
-//static AffineTransform createTransformForKnobPath(Path path, float centreX, float centreY, float rotAngle);
 
 #endif  // ZENLOOKANDFEEL_H_INCLUDED

@@ -35,15 +35,17 @@ ZenTextEditor::ZenTextEditor(const String& componentName, const ImageBorderType&
 	}
 	this->setColour(textColourId, Colours::antiquewhite);
 	this->setColour(backgroundColourId, Colour(0.0f));  //transparent background since we're drawing image
+	this->setColour(highlightColourId, Colours::white);
+	this->setColour(CaretComponent::caretColourId, Colour(0xffc3c3c3));
 	
 	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(ZenBinaryData::futurabook_ttf, ZenBinaryData::futurabook_ttfSize);
 	Font textFont(tface);
 	
-	textFont.setHeight(16.0f);
+	textFont.setHeight(14.0f);
 	this->setFont(textFont);
 	addComponentListener(this);
 	
-	setBorder(BorderSize<int>(1, 5, 1, 10 ));	
+	setBorder(BorderSize<int>(1, 5, 1, 5 ));	
 }
 
 
@@ -58,9 +60,8 @@ ZenTextEditor::~ZenTextEditor()
 void ZenTextEditor::componentMovedOrResized(Component& component, bool wasMoved, bool wasResized)
 {	
 	//resize font height to fully fill the vertical space if multiLine
-	if(!isMultiLine())
-		this->applyFontToAllText(getFont().withHeight(getHeight()*getFont().getHeightToPointsFactor()));
-	// #TODO: add handling for multi-line font height config
+	//if(!isMultiLine())
+	//	this->applyFontToAllText(getFont().withHeight(getHeight()*getFont().getHeightToPointsFactor()));
 	
 }
 
@@ -105,16 +106,17 @@ void ZenTextEditor::componentMovedOrResized(Component& component, bool wasMoved,
 // 		g.setColour(colourForTextWhenEmpty);
 // 		g.setFont(getFont());
 // 
-// // 		if (isMultiLine())
-// // 			g.drawText(textToShowWhenEmpty, getLocalBounds(),
-// // 				Justification::centred, true);
-// // 		else
-// // 			g.setColour(label.findColour(Label::textColourId).withMultipliedAlpha(alpha));
-// // 			g.drawFittedText(label.getText(), textArea, label.getJustificationType(),
-// // 				jmax(1, (int)(textArea.getHeight() / font.getHeight())), 0.01f);
-// // 			g.drawText(textToShowWhenEmpty,
-// // 				leftIndent, 0, viewport->getWidth() - leftIndent, getHeight(),
-// // 				Justification::centredLeft, true);
+//  		if (isMultiLine())
+//  			g.drawText(textToShowWhenEmpty, getLocalBounds(),
+//  				Justification::centred, true);
+//  		else
+// 			
+//  			g.setColour(label.findColour(Label::textColourId).withMultipliedAlpha(alpha));
+//  			g.drawFittedText(label.getText(), textArea, label.getJustificationType(),
+//  				jmax(1, (int)(textArea.getHeight() / font.getHeight())), 0.01f);
+//  			g.drawText(textToShowWhenEmpty,
+//  				leftIndent, 0, viewport->getWidth() - leftIndent, getHeight(),
+//  				Justification::centredLeft, true);
 // 	}
 // 
 // 	getLookAndFeel().drawTextEditorOutline(g, getWidth(), getHeight(), *this);

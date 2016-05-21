@@ -35,6 +35,9 @@ public:
 	void mouseDoubleClick(const MouseEvent&) override;
 	void mouseDown(const MouseEvent& event) override;
 
+	int getRotaryLabelWidth() { return getWidth(); }
+	int getRotaryLabelHeight() { return getHeight(); }
+
 
 protected:
 	bool textHasShadow;

@@ -40,6 +40,10 @@ using namespace juce;
 #include "GUI/ZenRotaryEditorLabel.h"
 #include "GUI/ZenRotaryFilmStripSlider.h"
 #include "GUI/ZenTextEditor.h"
+#include "GUI/ZenComboBox.h"
+#include "GUI/ZenTitleBar.h"
+#include "GUI/ZenBypassButton.h"
+#include "GUI/ZenMenuButton.h"
 #include "GUI/ZenLookAndFeel.h"
 
 #include "utilities/ZenUtils.hpp"

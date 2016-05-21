@@ -84,6 +84,12 @@ public:
     static const int zenImageButton_activeHoverLeft_pngSize;
     static const char* zenImageButton_activeHoverRight_png;
     static const int zenImageButton_activeHoverRight_pngSize;
+    static const char* zenComboBox_center_png;
+    static const int zenComboBox_center_pngSize;
+    static const char* zenComboBox_left_png;
+    static const int zenComboBox_left_pngSize;
+    static const char* zenComboBox_right_png;
+    static const int zenComboBox_right_pngSize;
 
     // Binary resources:
     static const char* futurabook_ttf;

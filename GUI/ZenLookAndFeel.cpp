@@ -22,34 +22,39 @@
 ZenLookAndFeel::ZenLookAndFeel()
 {
 	defaultFont = Typeface::createSystemTypefaceFor(ZenBinaryData::futurabook_ttf, ZenBinaryData::futurabook_ttfSize);
+	setColour(PopupMenu::backgroundColourId, Colour((juce::uint8) 41, 41, 41, (float)1.0f));
+	setColour(PopupMenu::textColourId, Colours::lightgrey);
+	setColour(PopupMenu::highlightedBackgroundColourId, Colours::darkslateblue);
+	setColour(PopupMenu::highlightedTextColourId, Colours::lightgrey);
+	setColour(PopupMenu::headerTextColourId, Colours::red);
 }
 
-void ZenLookAndFeel::drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, Slider& slider)
+void ZenLookAndFeel::drawZenRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, ZenRotaryFilmStripSlider& zenSlider)
 {
 	g.setOpacity(1.0f);
-	ZenRotaryFilmStripSlider* zenSlider = dynamic_cast<ZenRotaryFilmStripSlider*>(&slider);
-	if (zenSlider != nullptr)
-	{
-		if (zenSlider->hasValidFilmStrip())
+	//ZenRotaryFilmStripSlider* zenSlider = dynamic_cast<ZenRotaryFilmStripSlider*>(&slider);
+// 	if (zenSlider != nullptr)
+// 	{
+		if (zenSlider.hasValidFilmStrip())
 		{
-			Rectangle<int> sliderRect = slider.getSliderRect();
+			Rectangle<int> sliderRect = zenSlider.getSliderRect();
 
-			int value = (zenSlider->getValue() - zenSlider->getMinimum()) / (zenSlider->getMaximum() - zenSlider->getMinimum()) * (zenSlider->numFrames - 1);
+			int value = (zenSlider.getValue() - zenSlider.getMinimum()) / (zenSlider.getMaximum() - zenSlider.getMinimum()) * (zenSlider.getNumFrames() - 1);
 
-			if (zenSlider->filmstripIsHorizontal)
+			if (zenSlider.getFilmstripIsHorizontal())
 			{
-				g.drawImage(zenSlider->getFilmStrip(), sliderRect.getX(), sliderRect.getY(), sliderRect.getWidth(), sliderRect.getHeight(), value * zenSlider->getFrameWidth(), 0, zenSlider->getFrameWidth(), zenSlider->getFrameHeight());
+				g.drawImage(zenSlider.getFilmStrip(), sliderRect.getX(), sliderRect.getY(), zenSlider.getKnobWidth(), zenSlider.getKnobHeight(), value * zenSlider.getFrameWidth(), 0, zenSlider.getFrameWidth(), zenSlider.getFrameHeight());
 			}
 			else
 			{
-				g.drawImage(zenSlider->getFilmStrip(), sliderRect.getX(), sliderRect.getY(), sliderRect.getWidth(), sliderRect.getHeight(), 0, value * zenSlider->getFrameHeight(), zenSlider->getFrameWidth(), zenSlider->getFrameHeight());
+				g.drawImage(zenSlider.getFilmStrip(), sliderRect.getX(), sliderRect.getY(), zenSlider.getKnobWidth(), zenSlider.getKnobHeight(), 0, value * zenSlider.getFrameHeight(), zenSlider.getFrameWidth(), zenSlider.getFrameHeight());
 			}
 		}
-	}
-	else //If not Zen Slider
-	{
-		LookAndFeel_V2::drawRotarySlider(g, x, y, width, height, sliderPos, rotaryStartAngle, rotaryEndAngle, slider);
-	}
+	//}
+// 	else //If not Zen Slider
+// 	{
+// 		LookAndFeel_V2::drawRotarySlider(g, x, y, width, height, sliderPos, rotaryStartAngle, rotaryEndAngle, slider);
+// 	}
 }
 
 void ZenLookAndFeel::drawLabel(Graphics& g, Label& label)
@@ -162,33 +167,6 @@ void ZenLookAndFeel::drawLabel(Graphics& g, Label& label)
 	g.drawRect(label.getLocalBounds());
 }
 
-Font ZenLookAndFeel::getLabelFont(Label& label)
-{
-	if (label.getWidth() > 30)
-		return Font("Futura Book", 16, Font::plain);
-	else
-		return Font("Futura Book", 12, Font::plain);
-}
-
-Font ZenLookAndFeel::getZenImageButtonFont(ZenImageButton& zenbtn)
-{
-	if (zenbtn.getHeight() > 30)
-	{
-		
-		Font theFont("Futura Book", 18, Font::plain);
-		theFont.setExtraKerningFactor(0.06f);
-		return theFont;
-	}
-	else
-	{		
-		Font theFont("Futura Book", 14, Font::plain);
-		theFont.setExtraKerningFactor(0.06f);
-		return theFont;
-	}
-}
-
-
-
 void ZenLookAndFeel::drawButtonBackground(Graphics& g, Button& button, const Colour& backgroundColour,
                                           bool isMouseOverButton, bool isButtonDown)
 {
@@ -295,7 +273,6 @@ Slider::SliderLayout ZenLookAndFeel::getSliderLayout(Slider& slider)
 				} else if (textBoxPos == Slider::TextBoxAbove)
 				{
 					layout.textBoxBounds.setY(0); // Original
-					//DBG("in textboxabove");
 					
 				} else if (textBoxPos == Slider::TextBoxBelow)
 				{
@@ -367,7 +344,6 @@ Slider::SliderLayout ZenLookAndFeel::getSliderLayout(Slider& slider)
 				if (textBoxPos == Slider::TextBoxAbove)
 				{
 					//layout.textBoxBounds.setY(0); // Original
-					DBG("in textboxabove");
 					layout.textBoxBounds.setY((localBounds.getHeight() - textBoxHeight) / 2);
 				}
 				else if (textBoxPos == Slider::TextBoxBelow) layout.textBoxBounds.setY(localBounds.getHeight() - textBoxHeight);
@@ -429,7 +405,6 @@ ZenRotaryEditorLabel* ZenLookAndFeel::createSliderTextBox(Slider& slider)
 		//slider->pimpl->sliderRect
 		int sWidth = zSlider->getSliderRect().getWidth();
 		int sHeight = zSlider->getSliderRect().getHeight();
-		//DBG(zSlider->getName() << " HxW: " << zSlider->getHeight() << " x " << String(zSlider->getWidth()));
 	}
 	
 	return zLabel;
@@ -437,7 +412,6 @@ ZenRotaryEditorLabel* ZenLookAndFeel::createSliderTextBox(Slider& slider)
 
 void ZenLookAndFeel::fillTextEditorBackground(Graphics& g, int width, int height, TextEditor& textEditor)
 {
-	//DBG("In ZenLookAndFeel::fillTextEditorBackground(g, width, height, textEditor) ");
 	g.setOpacity(1.0f);
 	ZenTextEditor* zenTextEditor = dynamic_cast<ZenTextEditor*>(&textEditor);
 	if (zenTextEditor != nullptr)
@@ -494,13 +468,6 @@ void ZenLookAndFeel::fillTextEditorBackground(Graphics& g, int width, int height
 	}
 }
 
-void ZenLookAndFeel::drawTextEditorOutline(Graphics& g, int width, int height, TextEditor& textEditor)
-{
-	//DBG("In ZenLookAndFeel::drawTextEditorOutline(g, width, height, textEditor) ");
-	//width = width + 1;
-	g.setOpacity(1.0f);
-	return;
-}
 
 void ZenLookAndFeel::drawImageButton(Graphics& g, Image* imageToDraw, int imageX, int imageY, int imageW, int imageH, const Colour& overlayColour, float imageOpacity, ImageButton& buttonToDraw)
 {
@@ -528,33 +495,59 @@ void ZenLookAndFeel::drawZenImageButton(Graphics& g, ZenImageButton& buttonToDra
 {
 	Image left, center, right;
 	g.setOpacity(1.0f);
-	if (buttonToDraw.getToggleState() )
+	bool toggleable = buttonToDraw.getClickingTogglesState();
+	
+	if (toggleable)
+	{
+		if (buttonToDraw.getToggleState() )
+		{
+			if (buttonToDraw.isMouseOver())
+			{			
+				left = buttonToDraw.getPressedHoverLeft();
+				center = buttonToDraw.getPressedHoverCenter();
+				right = buttonToDraw.getPressedHoverRight();
+			} else
+			{
+				left = buttonToDraw.getPressedLeft();
+				center = buttonToDraw.getPressedCenter();
+				right = buttonToDraw.getPressedRight();
+			}
+		} else //button not pressed
+		{
+			if (buttonToDraw.isMouseOver())
+			{
+				left = buttonToDraw.getHoverLeft();
+				center = buttonToDraw.getHoverCenter();
+				right = buttonToDraw.getHoverRight();
+			} else
+			{
+				left = buttonToDraw.getNormalLeft();
+				center = buttonToDraw.getNormalCenter();
+				right = buttonToDraw.getNormalRight();
+			}
+		} 
+	} else //not toggleable -- draw hover and show click if mouse pressed
 	{
 		if (buttonToDraw.isMouseOver())
-		{			
-			left = buttonToDraw.getPressedHoverLeft();
-			center = buttonToDraw.getPressedHoverCenter();
-			right = buttonToDraw.getPressedHoverRight();
-		} else
 		{
-			left = buttonToDraw.getPressedLeft();
-			center = buttonToDraw.getPressedCenter();
-			right = buttonToDraw.getPressedRight();
-		}
-	} else //button not pressed
-	{
-		if (buttonToDraw.isMouseOver())
-		{
-			left = buttonToDraw.getHoverLeft();
-			center = buttonToDraw.getHoverCenter();
-			right = buttonToDraw.getHoverRight();
-		} else
+			if (buttonToDraw.isMouseButtonDown())
+			{
+				left = buttonToDraw.getPressedHoverLeft();
+				center = buttonToDraw.getPressedHoverCenter();
+				right = buttonToDraw.getPressedHoverRight();
+			} else //mouse not down
+			{
+				left = buttonToDraw.getHoverLeft();
+				center = buttonToDraw.getHoverCenter();
+				right = buttonToDraw.getHoverRight();
+			}
+		} else // mouse not over button
 		{
 			left = buttonToDraw.getNormalLeft();
 			center = buttonToDraw.getNormalCenter();
-			right = buttonToDraw.getNormalRight();
+			right = buttonToDraw.getNormalRight();			
 		}
-	} 
+	}
 
 	g.drawImage(left, 0, 0, left.getWidth(), buttonToDraw.getHeight(),
 		0, 0, left.getWidth(), left.getHeight());
@@ -563,12 +556,276 @@ void ZenLookAndFeel::drawZenImageButton(Graphics& g, ZenImageButton& buttonToDra
 	g.drawImage(right, buttonToDraw.getWidth() - right.getWidth(), 0, right.getWidth(), buttonToDraw.getHeight(),
 		0, 0, right.getWidth(), right.getHeight());
 	
-	if (buttonToDraw.getToggleState())
-		g.setColour(Colour(29, 212, 12)); //33 129 23
+	if (buttonToDraw.getToggleState() || (!toggleable && buttonToDraw.isMouseButtonDown()))
+		g.setColour(buttonToDraw.getTextColorButtonOn()); // Draw text as green when pressed
 	else 
-		g.setColour(Colours::lightgrey);
+		g.setColour(buttonToDraw.getTextColorButtonOff());
 	g.setOpacity(1.0f);
 	g.setFont(getZenImageButtonFont(buttonToDraw));
 	g.drawFittedText(buttonToDraw.getButtonText(), buttonToDraw.getLocalBounds().reduced(5), Justification::centred, 1, 0.01f);
 
 }
+
+void ZenLookAndFeel::drawComboBox(Graphics& g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, ComboBox& inBox)
+{
+	g.fillAll(inBox.findColour(ComboBox::backgroundColourId));
+
+	const Colour buttonColour(inBox.findColour(ComboBox::buttonColourId));
+
+	if (inBox.isEnabled() && inBox.hasKeyboardFocus(false))
+	{
+		g.setColour(buttonColour);
+		g.drawRect(0, 0, width, height, 2);
+	}
+	else
+	{
+		g.setColour(inBox.findColour(ComboBox::outlineColourId));
+		g.drawRect(0, 0, width, height);
+	}
+
+	const float arrowX = 0.3f;
+	const float arrowH = 0.2f;
+
+	Path p;
+	p.addTriangle(buttonX + buttonW * 0.5f, buttonY + buttonH * (0.45f - arrowH),
+		buttonX + buttonW * (1.0f - arrowX), buttonY + buttonH * 0.45f,
+		buttonX + buttonW * arrowX, buttonY + buttonH * 0.45f);
+
+	p.addTriangle(buttonX + buttonW * 0.5f, buttonY + buttonH * (0.55f + arrowH),
+		buttonX + buttonW * (1.0f - arrowX), buttonY + buttonH * 0.55f,
+		buttonX + buttonW * arrowX, buttonY + buttonH * 0.55f);
+
+	g.setColour(inBox.findColour(ComboBox::arrowColourId).withMultipliedAlpha(inBox.isEnabled() ? 1.0f : 0.3f));
+	g.fillPath(p);
+
+	/* Overridden method
+	g.fillAll(inBox.findColour(ComboBox::backgroundColourId));
+
+	const Colour buttonColour(inBox.findColour(ComboBox::buttonColourId));
+
+	if (inBox.isEnabled() && inBox.hasKeyboardFocus(false))
+	{
+		g.setColour(buttonColour);
+		g.drawRect(0, 0, width, height, 2);
+	}
+	else
+	{
+		g.setColour(inBox.findColour(ComboBox::outlineColourId));
+		g.drawRect(0, 0, width, height);
+	}
+
+	const float arrowX = 0.3f;
+	const float arrowH = 0.2f;
+
+	Path p;
+	p.addTriangle(buttonX + buttonW * 0.5f, buttonY + buttonH * (0.45f - arrowH),
+		buttonX + buttonW * (1.0f - arrowX), buttonY + buttonH * 0.45f,
+		buttonX + buttonW * arrowX, buttonY + buttonH * 0.45f);
+
+	p.addTriangle(buttonX + buttonW * 0.5f, buttonY + buttonH * (0.55f + arrowH),
+		buttonX + buttonW * (1.0f - arrowX), buttonY + buttonH * 0.55f,
+		buttonX + buttonW * arrowX, buttonY + buttonH * 0.55f);
+
+	g.setColour(inBox.findColour(ComboBox::arrowColourId).withMultipliedAlpha(inBox.isEnabled() ? 1.0f : 0.3f));
+	g.fillPath(p);
+	*/
+}
+
+Label* ZenLookAndFeel::createComboBoxTextBox(ComboBox& inBox)
+{
+	return new Label(String::empty, String::empty);
+	/* Overridden method
+	return new Label(String::empty, String::empty);
+	*/
+}
+
+void ZenLookAndFeel::positionComboBoxText(ComboBox& inBox, Label& inLabel)
+{
+	inLabel.setBounds(1, 1,
+		inBox.getWidth() + 3 - inBox.getHeight(),
+		inBox.getHeight() - 2);
+
+	inLabel.setFont(getComboBoxFont(inBox));
+	/* Overridden method
+	inLabel.setBounds(1, 1,
+		inBox.getWidth() + 3 - inBox.getHeight(),
+		inBox.getHeight() - 2);
+
+	inLabel.setFont(getComboBoxFont(inBox));
+	*/
+}
+
+//***********************POPUP MENU METHODS*****************************************/
+
+void ZenLookAndFeel::drawPopupMenuBackground(Graphics& g, int width, int height)
+{
+	g.fillAll(findColour(PopupMenu::backgroundColourId));
+	ignoreUnused(width, height);
+
+#if ! JUCE_MAC
+	g.setColour(findColour(PopupMenu::textColourId).withAlpha(0.6f));
+	g.drawRect(0, 0, width, height);
+#endif
+}
+
+void ZenLookAndFeel::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area, bool isSeparator, bool isActive, 
+	bool isHighlighted, bool isTicked, bool hasSubMenu, const String& text, 
+	const String& shortcutKeyText, const Drawable* icon, const Colour* textColourToUse)
+{
+	if (isSeparator)
+	{
+		Rectangle<int> r(area.reduced(5, 0));
+		r.removeFromTop(r.getHeight() / 2 - 1);
+
+		g.setColour(Colour(0x33000000));
+		g.fillRect(r.removeFromTop(1));
+
+		g.setColour(Colour(0x66ffffff));
+		g.fillRect(r.removeFromTop(1));
+	}
+	else
+	{
+		Colour textColour(findColour(PopupMenu::textColourId));
+
+		if (textColourToUse != nullptr)
+			textColour = *textColourToUse;
+
+		Rectangle<int> r(area.reduced(1));
+
+		if (isHighlighted)
+		{
+			g.setColour(findColour(PopupMenu::highlightedBackgroundColourId));
+			g.fillRect(r);
+
+			g.setColour(findColour(PopupMenu::highlightedTextColourId));
+		}
+		else
+		{
+			g.setColour(textColour);
+		}
+
+		if (!isActive)
+			g.setOpacity(0.3f);
+
+		Font font(getPopupMenuFont());
+
+		const float maxFontHeight = area.getHeight() / 1.3f;
+
+		if (font.getHeight() > maxFontHeight)
+			font.setHeight(maxFontHeight);
+
+		g.setFont(font);
+
+		Rectangle<float> iconArea(r.removeFromLeft((r.getHeight() * 5) / 4).reduced(3).toFloat());
+
+		if (icon != nullptr)
+		{
+			icon->drawWithin(g, iconArea, RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize, 1.0f);
+		}
+		else if (isTicked)
+		{
+			const Path tick(getTickShape(1.0f));
+			g.fillPath(tick, tick.getTransformToScaleToFit(iconArea, true));
+		}
+
+		if (hasSubMenu)
+		{
+			const float arrowH = 0.6f * getPopupMenuFont().getAscent();
+
+			const float x = (float)r.removeFromRight((int)arrowH).getX();
+			const float halfH = (float)r.getCentreY();
+
+			Path p;
+			p.addTriangle(x, halfH - arrowH * 0.5f,
+				x, halfH + arrowH * 0.5f,
+				x + arrowH * 0.6f, halfH);
+
+			g.fillPath(p);
+		}
+
+		r.removeFromRight(3);
+		g.drawFittedText(text, r, Justification::centredLeft, 1);
+
+		if (shortcutKeyText.isNotEmpty())
+		{
+			Font f2(font);
+			f2.setHeight(f2.getHeight() * 0.75f);
+			f2.setHorizontalScale(0.95f);
+			g.setFont(f2);
+
+			g.drawText(shortcutKeyText, r, Justification::centredRight, true);
+		}
+	}
+}
+
+void ZenLookAndFeel::drawPopupMenuSectionHeader(Graphics& g, const Rectangle<int>& area, const String& sectionName)
+{
+	g.setFont(getPopupMenuFont().boldened());
+	g.setColour(findColour(PopupMenu::headerTextColourId));
+
+	g.drawFittedText(sectionName,
+		area.getX() + 12, area.getY(), area.getWidth() - 16, (int)(area.getHeight() * 0.8f),
+		Justification::bottomLeft, 1);
+}
+
+Font ZenLookAndFeel::getPopupMenuFont()
+{
+	return Font(17.0f);
+}
+
+void ZenLookAndFeel::drawPopupMenuUpDownArrow(Graphics& g, int width, int height, bool isScrollUpArrow)
+{
+	const Colour background(findColour(PopupMenu::backgroundColourId));
+
+	g.setGradientFill(ColourGradient(background, 0.0f, height * 0.5f,
+		background.withAlpha(0.0f),
+		0.0f, isScrollUpArrow ? ((float)height) : 0.0f,
+		false));
+
+	g.fillRect(1, 1, width - 2, height - 2);
+
+	const float hw = width * 0.5f;
+	const float arrowW = height * 0.3f;
+	const float y1 = height * (isScrollUpArrow ? 0.6f : 0.3f);
+	const float y2 = height * (isScrollUpArrow ? 0.3f : 0.6f);
+
+	Path p;
+	p.addTriangle(hw - arrowW, y1,
+		hw + arrowW, y1,
+		hw, y2);
+
+	g.setColour(findColour(PopupMenu::textColourId).withAlpha(0.5f));
+	g.fillPath(p);
+}
+
+Font ZenLookAndFeel::getComboBoxFont(ComboBox& inBox)
+{
+	return Font("Futura Book", jmin(15.0f, inBox.getHeight() * 0.85f), Font::plain);
+}
+
+Font ZenLookAndFeel::getLabelFont(Label& label)
+{
+	if (label.getWidth() > 30)
+		return Font("Futura Book", 16, Font::plain);
+	else
+		return Font("Futura Book", 12, Font::plain);
+}
+
+Font ZenLookAndFeel::getZenImageButtonFont(ZenImageButton& zenbtn)
+{
+	if (zenbtn.getHeight() > 30)
+	{
+		
+		Font theFont("Futura Book", 18, Font::plain);
+		theFont.setExtraKerningFactor(0.06f);
+		return theFont;
+	}
+	else
+	{		
+		Font theFont("Futura Book", 14, Font::plain);
+		theFont.setExtraKerningFactor(0.06f);
+		return theFont;
+	}
+}
+
+

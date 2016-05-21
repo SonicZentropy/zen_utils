@@ -66,13 +66,18 @@ public:
 	Image getPressedHoverCenter() const { return pressedHoverCenter; }
 	void setPressedHoverCenter(Image inValue) { pressedHoverCenter = inValue; }
 
+	Colour getTextColorButtonOn() const { return textColorButtonOn; }
+	void setTextColorButtonOn(Colour inValue) { textColorButtonOn = inValue; }
+
+	Colour getTextColorButtonOff() const { return textColorButtonOff; }
+	void setTextColorButtonOff(Colour inValue) { textColorButtonOff = inValue; }
+
 	//void paint (Graphics&) override;
     //void resized() override;
 
 
 protected:
 	//bool hitTest(int x, int y) override;
-	// #TODO: add mouse down graphic to non-toggle state version so user can see it being pressed
 	void paintButton(Graphics&, bool isMouseOver, bool isButtonDown) override;
 
 private:
@@ -80,6 +85,7 @@ private:
 	Image hoverLeft, hoverRight, hoverCenter;
 	Image pressedLeft, pressedRight, pressedCenter;
 	Image pressedHoverLeft, pressedHoverRight, pressedHoverCenter;
+	Colour textColorButtonOn, textColorButtonOff;
 	String buttonText;
 
 

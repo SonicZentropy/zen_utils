@@ -24,7 +24,7 @@
 	// This Iterates over parameters and resets Smooth for the ones who need it
 	for (auto param : getParameters())
 	{
-		ZenParameter* zenParam = dynamic_cast<ZenParameter*>(param);
+		ZenParameter* zenParam = dynamic _cast<ZenParameter*>(param);
 		if (zenParam != nullptr)
 		{
 			if (zenParam->checkShouldBeSmoothed())

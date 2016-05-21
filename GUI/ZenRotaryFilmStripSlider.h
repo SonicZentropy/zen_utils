@@ -18,7 +18,7 @@
 //#include "JuceHeader.h"
 //#include "ZenBinaryData.h"
 
-
+using std::shared_ptr;
 /// <summary>Class ZenRotaryFilmStripSlider.</summary>
 /// <seealso cref="Slider" />
 class ZenRotaryFilmStripSlider : public virtual Slider
@@ -32,7 +32,8 @@ public:
 	/// <param name="knobHeight">Height of the knob.</param>
 	/// <param name="inPos">The in position.</param>
 	/// <param name="stripIsHorizontal">The strip is horizontal.</param>
-	ZenRotaryFilmStripSlider(const String& imgName, const int numFrames, const int knobWidth = 64, const int knobHeight = 64, const TextEntryBoxPosition inPos = TextBoxCentered, const bool stripIsHorizontal = false);
+	ZenRotaryFilmStripSlider(const String& imgName, const int numFrames, const int knobWidth = 64, const int knobHeight = 64, 
+		const TextEntryBoxPosition inPos = TextBoxCentered, const int inTextBoxWidth = 60, const int inTextBoxHeight = 24, const bool stripIsHorizontal = false);
 
 
 	~ZenRotaryFilmStripSlider();
@@ -53,7 +54,9 @@ public:
 	/// <summary>Gets the height of the frame.</summary>
 	int getFrameHeight() const;
 	
-	void setSize(int newWidth, int newHeight);
+	void setSize(int newWidth, int newHeight) override;
+	void paint(Graphics& g) override;
+
 	Image getFilmStrip() const { return filmStrip; }
 
 
@@ -62,15 +65,22 @@ public:
 	/// <summary>Determines whether [has valid film strip].</summary>
 	/// <returns type="bool">bool.</returns>
 	bool hasValidFilmStrip() const { return filmStrip.isValid(); }
-	
-	/// The number frames
-	const int numFrames;
-	
-	/// The filmstrip is horizontal
-	const bool filmstripIsHorizontal;
 
+	void setKnobSize(int inWidth, int inHeight);
 
-private:
+	int getKnobWidth() const { return knobWidth; }
+	void setKnobWidth(int inValue) { knobWidth = inValue; }
+
+	int getKnobHeight() const { return knobHeight; }
+	void setKnobHeight(int inValue) { knobHeight = inValue; }
+
+	bool getFilmstripIsHorizontal() const { return filmstripIsHorizontal; }
+	void setFilmstripIsHorizontal(bool inValue) { filmstripIsHorizontal = inValue; }
+
+	int getNumFrames() const { return numFrames; }
+	void setNumFrames(int inValue) { numFrames = inValue; }
+
+protected:
 	
 	/// The film strip
 	Image filmStrip;
@@ -79,7 +89,13 @@ private:
 	bool isSmallKnob;
 	
 	/// The frame width
-	int frameWidth, frameHeight;
+	int frameWidth, frameHeight, knobWidth, knobHeight;
+	int numFrames;
+	bool filmstripIsHorizontal;
+
+	//Intentionally non-owned, do not delete this pointer!
+	LookAndFeel* currentLookAndFeel;
+	Rectangle<int> sliderRect;
 
 	
 	//==============================================================================
